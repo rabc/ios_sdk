@@ -16,7 +16,8 @@ jobs:
         run: |
           mkdir -p frameworks/static
           xcodebuild -target AdjustStatic -configuration Release clean build
-          zip AdjustSdk.framework.zip frameworks/static/AdjustSdk.framework/*
+          mv frameworks/static/* .
+          zip AdjustSdk.framework.zip AdjustSdk.framework/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
@@ -34,7 +35,8 @@ jobs:
           xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
           cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
           lipo -create -output frameworks/static_tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
-          zip AdjustSdkTv.framework.zip frameworks/static_tvos/AdjustSdkTv.framework/*
+          mv frameworks/static_tvos/* 
+          zip AdjustSdkTv.framework.zip AdjustSdkTv.framework/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
@@ -54,8 +56,10 @@ jobs:
   #         mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme \
   #           Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWebBridge.xcscheme .
   #         carthage build --no-skip-current
-  #         zip AdjustSdkDynamic.framework.zip Carthage/Build/iOS/*
-  #         zip AdjustSdkTv.framework.zip Carthage/Build/tvOS/*
+  #         mkdir AdjustSdk
+  #         mv Carthage/Build/iOS/* AdjustSdk
+  #         zip AdjustSdkDynamic.framework.zip AdjustSdk/*
+  #        # zip AdjustSdkTv.framework.zip Carthage/Build/tvOS/*
   #     - name: Upload iOS
   #       uses: actions/upload-artifact@v2
   #       with:
@@ -80,7 +84,9 @@ jobs:
   #         mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdk.xcscheme \
   #             Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkTv.xcscheme .
   #         carthage build --no-skip-current
-  #         zip AdjustSdkIm.framework.zip Carthage/Build/iOS/*
+  #         mkdir AdjustSdkIm
+  #         mv Carthage/Build/iOS/* AdjustSdkIm
+  #         zip AdjustSdkIm.framework.zip AdjustSdkIm/*
   #     - name: Upload framework
   #       uses: actions/upload-artifact@v2
   #       with:
@@ -99,7 +105,9 @@ jobs:
   #       run: |
   #         mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme .
   #         carthage build --no-skip-current
-  #         zip AdjustSdkWebBridge.framework.zip Carthage/Build/iOS/*
+  #         mkdir AdjustSdkWebBridge
+  #         mv Carthage/Build/iOS/* AdjustSdkWebBridge
+  #         zip AdjustSdkWebBridge.framework.zip AdjustSdkWebBridge/*
   #     - name: Upload framework
   #       uses: actions/upload-artifact@v2
   #       with:
