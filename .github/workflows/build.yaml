@@ -17,7 +17,7 @@ jobs:
           mkdir -p frameworks/static
           xcodebuild -target AdjustStatic -configuration Release clean build
           mv frameworks/static/* .
-          zip -r AdjustSdkStatic.framework.zip AdjustSdk.framework/*
+          zip -ry AdjustSdkStatic.framework.zip AdjustSdk.framework/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
@@ -36,7 +36,7 @@ jobs:
           cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
           lipo -create -output frameworks/static_tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
           mv frameworks/static_tvos/* .
-          zip -r AdjustSdkTvStatic.framework.zip AdjustSdkTv.framework/*
+          zip -ry AdjustSdkTvStatic.framework.zip AdjustSdkTv.framework/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
@@ -59,11 +59,11 @@ jobs:
           
           mkdir AdjustSdk_iOS
           mv Carthage/Build/iOS/* AdjustSdk_iOS
-          zip -r AdjustSdkDynamic.framework.zip AdjustSdk_iOS/*
+          zip -ry AdjustSdkDynamic.framework.zip AdjustSdk_iOS/*
 
           mkdir AdjustSdk_tvOS
           mv Carthage/Build/tvOS/* AdjustSdk_tvOS
-          zip -r AdjustSdkTvDynamic.framework.zip AdjustSdk_tvOS/*
+          zip -ry AdjustSdkTvDynamic.framework.zip AdjustSdk_tvOS/*
       - name: Upload iOS
         uses: actions/upload-artifact@v2
         with:
@@ -92,7 +92,7 @@ jobs:
           
           mkdir AdjustSdk_iMessage
           mv Carthage/Build/iOS/* AdjustSdk_iMessage
-          zip -r AdjustSdkIm.framework.zip AdjustSdk_iMessage/*
+          zip -ry AdjustSdkIm.framework.zip AdjustSdk_iMessage/*
       - name: Upload framework
         uses: actions/upload-artifact@v2
         with:
@@ -115,7 +115,7 @@ jobs:
           carthage build --no-skip-current
           mkdir AdjustSdk_WebBridge
           mv Carthage/Build/iOS/* AdjustSdk_WebBridge
-          zip -r AdjustSdkWebBridge.framework.zip AdjustSdk_WebBridge/*
+          zip -ry AdjustSdkWebBridge.framework.zip AdjustSdk_WebBridge/*
       - name: Upload framework
         uses: actions/upload-artifact@v2
         with:
