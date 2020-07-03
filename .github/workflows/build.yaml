@@ -43,76 +43,76 @@ jobs:
           name: universal_tvos
           path: AdjustSdkTv.framework.zip
 
-  # dynamic_ios_tvos:
-  #   name: Build dynamic iOS and tvOS targets with Carthage
-  #   runs-on: macOS-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Install Carthage
-  #       run: |
-  #         brew install carthage
-  #     - name: Build dynamic framework
-  #       run: |
-  #         mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme \
-  #           Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWebBridge.xcscheme .
-  #         carthage build --no-skip-current
-  #         mkdir AdjustSdk
-  #         mv Carthage/Build/iOS/* AdjustSdk
-  #         zip AdjustSdkDynamic.framework.zip AdjustSdk/*
-  #        # zip AdjustSdkTv.framework.zip Carthage/Build/tvOS/*
-  #     - name: Upload iOS
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: dynamic_ios
-  #         path: AdjustSdkDynamic.framework.zip
-  #     # - name: Upload tvOS
-  #     #   uses: actions/upload-artifact@v2
-  #     #   with:
-  #     #     name: dynamic_tvos
-  #     #     path: AdjustSdkTv.framework.zip
+  dynamic_ios_tvos:
+    name: Build dynamic iOS and tvOS targets with Carthage
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Carthage
+        run: |
+          brew install carthage
+      - name: Build dynamic framework
+        run: |
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme \
+            Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWebBridge.xcscheme .
+          carthage build --no-skip-current
+          mkdir AdjustSdk
+          mv Carthage/Build/iOS/* AdjustSdk
+          zip AdjustSdkDynamic.framework.zip AdjustSdk/*
+         # zip AdjustSdkTv.framework.zip Carthage/Build/tvOS/*
+      - name: Upload iOS
+        uses: actions/upload-artifact@v2
+        with:
+          name: dynamic_ios
+          path: AdjustSdkDynamic.framework.zip
+      # - name: Upload tvOS
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: dynamic_tvos
+      #     path: AdjustSdkTv.framework.zip
 
-  # dynamic_imessage:
-  #   name: Build dynamic iMessage target with Carthage
-  #   runs-on: macOS-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Install Carthage
-  #       run: |
-  #         brew install carthage
-  #     - name: Build dynamic framework
-  #       run: |
-  #         mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdk.xcscheme \
-  #             Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkTv.xcscheme .
-  #         carthage build --no-skip-current
-  #         mkdir AdjustSdkIm
-  #         mv Carthage/Build/iOS/* AdjustSdkIm
-  #         zip AdjustSdkIm.framework.zip AdjustSdkIm/*
-  #     - name: Upload framework
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: dynamic_imessage
-  #         path: AdjustSdkIm.framework.zip
+  dynamic_imessage:
+    name: Build dynamic iMessage target with Carthage
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Carthage
+        run: |
+          brew install carthage
+      - name: Build dynamic framework
+        run: |
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdk.xcscheme \
+              Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkTv.xcscheme .
+          carthage build --no-skip-current
+          mkdir AdjustSdkIm
+          mv Carthage/Build/iOS/* AdjustSdkIm
+          zip AdjustSdkIm.framework.zip AdjustSdkIm/*
+      - name: Upload framework
+        uses: actions/upload-artifact@v2
+        with:
+          name: dynamic_imessage
+          path: AdjustSdkIm.framework.zip
 
-  # dynamic_webbridge:
-  #   name: Build dynamic WebBridge target with Carthage
-  #   runs-on: macOS-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Install Carthage
-  #       run: |
-  #         brew install carthage
-  #     - name: Build dynamic framework
-  #       run: |
-  #         mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme .
-  #         carthage build --no-skip-current
-  #         mkdir AdjustSdkWebBridge
-  #         mv Carthage/Build/iOS/* AdjustSdkWebBridge
-  #         zip AdjustSdkWebBridge.framework.zip AdjustSdkWebBridge/*
-  #     - name: Upload framework
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: dynamic_webbridge
-  #         path: AdjustSdkWebBridge.framework.zip
+  dynamic_webbridge:
+    name: Build dynamic WebBridge target with Carthage
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Carthage
+        run: |
+          brew install carthage
+      - name: Build dynamic framework
+        run: |
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme .
+          carthage build --no-skip-current
+          mkdir AdjustSdkWebBridge
+          mv Carthage/Build/iOS/* AdjustSdkWebBridge
+          zip AdjustSdkWebBridge.framework.zip AdjustSdkWebBridge/*
+      - name: Upload framework
+        uses: actions/upload-artifact@v2
+        with:
+          name: dynamic_webbridge
+          path: AdjustSdkWebBridge.framework.zip
 
   release:
     name: Create new release and upload assets
@@ -155,33 +155,33 @@ jobs:
           asset_name: AdjustSdkTv.framework.zip
           asset_content_type: application/zip
           
-      # - name: Upload dynamic iOS framework
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }} 
-      #     asset_path: frameworks/dynamic_ios/AdjustSdkDynamic.framework.zip
-      #     asset_name: AdjustSdkDynamic.framework.zip
-      #     asset_content_type: application/zip
+      - name: Upload dynamic iOS framework
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: frameworks/dynamic_ios/AdjustSdkDynamic.framework.zip
+          asset_name: AdjustSdkDynamic.framework.zip
+          asset_content_type: application/zip
           
-      # - name: Upload dynamic iMessage framework
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }} 
-      #     asset_path: frameworks/dynamic_imessage/AdjustSdkIm.framework.zip
-      #     asset_name: AdjustSdkIm.framework.zip
-      #     asset_content_type: application/zip
+      - name: Upload dynamic iMessage framework
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: frameworks/dynamic_imessage/AdjustSdkIm.framework.zip
+          asset_name: AdjustSdkIm.framework.zip
+          asset_content_type: application/zip
           
-      # - name: Upload dynamic WebBridge framework
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }} 
-      #     asset_path: frameworks/dynamic_webbridge/AdjustSdkWebBridge.framework.zip
-      #     asset_name: AdjustSdkWebBridge.framework.zip
-      #     asset_content_type: application/zip
+      - name: Upload dynamic WebBridge framework
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: frameworks/dynamic_webbridge/AdjustSdkWebBridge.framework.zip
+          asset_name: AdjustSdkWebBridge.framework.zip
+          asset_content_type: application/zip
 
