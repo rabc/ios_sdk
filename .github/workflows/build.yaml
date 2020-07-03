@@ -8,7 +8,7 @@ on:
 name: Build framework
 jobs:
   static:
-    name: Build static
+    name: Build static SDK
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,14 +17,14 @@ jobs:
           mkdir -p frameworks/static
           xcodebuild -target AdjustStatic -configuration Release clean build
           mv frameworks/static/* .
-          zip AdjustSdk.framework.zip AdjustSdk.framework/*
+          zip AdjustSdkStatic.framework.zip AdjustSdk.framework/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
           name: static_framework
-          path: AdjustSdk.framework.zip
+          path: AdjustSdkStatic.framework.zip
   tvOS:
-    name: Build tvOS SDK
+    name: Build Static tvOS SDK
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
@@ -36,12 +36,12 @@ jobs:
           cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
           lipo -create -output frameworks/static_tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
           mv frameworks/static_tvos/* .
-          zip AdjustSdkTv.framework.zip AdjustSdkTv.framework/*
+          zip AdjustSdkTvStatic.framework.zip AdjustSdkTv.framework/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
           name: universal_tvos
-          path: AdjustSdkTv.framework.zip
+          path: AdjustSdkTvStatic.framework.zip
 
   dynamic_ios_tvos:
     name: Build dynamic iOS and tvOS targets with Carthage
@@ -56,20 +56,24 @@ jobs:
           mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme \
             Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkWebBridge.xcscheme .
           carthage build --no-skip-current
-          mkdir AdjustSdk
-          mv Carthage/Build/iOS/* AdjustSdk
-          zip AdjustSdkDynamic.framework.zip AdjustSdk/*
-         # zip AdjustSdkTv.framework.zip Carthage/Build/tvOS/*
+          
+          mkdir AdjustSdk_iOS
+          mv Carthage/Build/iOS/* AdjustSdk_iOS
+          zip AdjustSdkDynamic.framework.zip AdjustSdk_iOS/*
+
+          mkdir AdjustSdk_tvOS
+          mv Carthage/Build/tvOS/* AdjustSdk_tvOS
+          zip AdjustSdkTvDynamic.framework.zip AdjustSdk_tvOS/*
       - name: Upload iOS
         uses: actions/upload-artifact@v2
         with:
           name: dynamic_ios
           path: AdjustSdkDynamic.framework.zip
-      # - name: Upload tvOS
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: dynamic_tvos
-      #     path: AdjustSdkTv.framework.zip
+      - name: Upload tvOS
+        uses: actions/upload-artifact@v2
+        with:
+          name: dynamic_tvos
+          path: AdjustSdkTvDynamic.framework.zip
 
   dynamic_imessage:
     name: Build dynamic iMessage target with Carthage
@@ -81,12 +85,14 @@ jobs:
           brew install carthage
       - name: Build dynamic framework
         run: |
-          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdk.xcscheme \
-              Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkTv.xcscheme .
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/*.xcscheme .
+          mv AdjustSdkIm.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+
           carthage build --no-skip-current
-          mkdir AdjustSdkIm
-          mv Carthage/Build/iOS/* AdjustSdkIm
-          zip AdjustSdkIm.framework.zip AdjustSdkIm/*
+          
+          mkdir AdjustSdk_iMessage
+          mv Carthage/Build/iOS/* AdjustSdk_iMessage
+          zip AdjustSdkIm.framework.zip AdjustSdk_iMessage/*
       - name: Upload framework
         uses: actions/upload-artifact@v2
         with:
@@ -103,11 +109,13 @@ jobs:
           brew install carthage
       - name: Build dynamic framework
         run: |
-          mv Adjust.xcodeproj/xcshareddata/xcschemes/AdjustSdkIm.xcscheme .
+          mv Adjust.xcodeproj/xcshareddata/xcschemes/*.xcscheme .
+          mv AdjustSdkWebBridge.xcscheme Adjust.xcodeproj/xcshareddata/xcschemes
+
           carthage build --no-skip-current
-          mkdir AdjustSdkWebBridge
-          mv Carthage/Build/iOS/* AdjustSdkWebBridge
-          zip AdjustSdkWebBridge.framework.zip AdjustSdkWebBridge/*
+          mkdir AdjustSdk_WebBridge
+          mv Carthage/Build/iOS/* AdjustSdk_WebBridge
+          zip AdjustSdkWebBridge.framework.zip AdjustSdk_WebBridge/*
       - name: Upload framework
         uses: actions/upload-artifact@v2
         with:
