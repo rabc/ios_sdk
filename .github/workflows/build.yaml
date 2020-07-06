@@ -16,8 +16,10 @@ jobs:
         run: |
           mkdir -p frameworks/static
           xcodebuild -target AdjustStatic -configuration Release clean build
-          mv frameworks/static/* .
-          zip -ry AdjustSdkStatic.framework.zip AdjustSdk.framework/*
+
+          mkdir AdjustSdkStatic
+          mv frameworks/static/* AdjustSdkStatic
+          zip -ry AdjustSdkStatic.framework.zip AdjustSdkStatic/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
@@ -35,8 +37,10 @@ jobs:
           xcodebuild -configuration Release -target AdjustSdkTv -arch arm64 -sdk appletvos build
           cp -Rv build/Release-appletvos/AdjustSdkTv.framework frameworks/static_tvos
           lipo -create -output frameworks/static_tvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvos/AdjustSdkTv.framework/AdjustSdkTv build/Release-appletvsimulator/AdjustSdkTv.framework/AdjustSdkTv
-          mv frameworks/static_tvos/* .
-          zip -ry AdjustSdkTvStatic.framework.zip AdjustSdkTv.framework/*
+
+          mkdir AdjustSdkTvStatic
+          mv frameworks/static_tvos/* AdjustSdkTvStatic
+          zip -ry AdjustSdkTvStatic.framework.zip AdjustSdkTvStatic/*
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
